@@ -5,11 +5,11 @@ CREATE DATABASE logistics_db;
 USE logistics_db;
 
 -- ==============================
--- 2. CREATE TABLE (5 columns)
+-- 2. CREATE TABLE (with PRIMARY KEY to avoid safe mode error)
 -- ==============================
 CREATE TABLE shipments (
     receiving_date DATE,
-    tracking_number VARCHAR(50),
+    tracking_number VARCHAR(50) PRIMARY KEY,
     product_name VARCHAR(100),
     cbm DECIMAL(10,2),
     weight DECIMAL(10,2)
@@ -19,73 +19,55 @@ CREATE TABLE shipments (
 -- 3. INSERT 6 ROWS
 -- ==============================
 INSERT INTO shipments VALUES
-('2026-04-01', 'TRK001', 'Laptop', 0.25, 2.50),
-('2026-04-02', 'TRK002', 'Shoes', 0.15, 1.20),
-('2026-04-03', 'TRK003', 'Phone', 0.10, 0.50),
-('2026-04-04', 'TRK004', 'Table', 1.50, 20.00),
-('2026-04-05', 'TRK005', 'Chair', 0.80, 8.00),
-('2026-04-06', 'TRK006', 'Monitor', 0.40, 4.50);
+('2026-04-01', 'TRK001', 'Laptop', 0.50, 2.50),
+('2026-04-02', 'TRK002', 'Phone', 0.20, 0.50),
+('2026-04-03', 'TRK003', 'Monitor', 1.20, 5.00),
+('2026-04-04', 'TRK004', 'Keyboard', 0.10, 0.80),
+('2026-04-05', 'TRK005', 'Mouse', 0.05, 0.30),
+('2026-04-06', 'TRK006', 'Printer', 2.00, 8.00);
 
 -- ==============================
--- 4. VIEW ALL DATA
--- ==============================
-SELECT * FROM shipments;
-
--- ==============================
--- 5. UPDATE (EDIT DATA)
+-- 4. EDIT (UPDATE DATA)
 -- ==============================
 UPDATE shipments
 SET weight = 3.00
 WHERE tracking_number = 'TRK001';
 
 -- ==============================
--- 6. DELETE ROW
+-- 5. DELETE DATA
 -- ==============================
 DELETE FROM shipments
-WHERE tracking_number = 'TRK002';
+WHERE tracking_number = 'TRK006';
 
 -- ==============================
--- 7. FILTER DATA (WHERE)
+-- 6. FILTER DATA (WHERE)
 -- ==============================
-SELECT * FROM shipments
-WHERE cbm > 0.5;
-
-SELECT * FROM shipments
-WHERE product_name = 'Laptop';
+SELECT *
+FROM shipments
+WHERE weight > 2;
 
 -- ==============================
--- 8. SORT DATA (ORDER BY)
+-- 7. SORT DATA (ORDER BY)
 -- ==============================
-SELECT * FROM shipments
-ORDER BY weight ASC;
-
-SELECT * FROM shipments
-ORDER BY cbm DESC;
+SELECT *
+FROM shipments
+ORDER BY weight DESC;
 
 -- ==============================
--- 9. ADD COLUMN
+-- 8. ADD COLUMN (ALTER TABLE)
 -- ==============================
 ALTER TABLE shipments
-ADD shipping_status VARCHAR(50);
+ADD status VARCHAR(20);
 
 -- ==============================
--- 10. UPDATE NEW COLUMN DATA
+-- 9. UPDATE NEW COLUMN
 -- ==============================
 UPDATE shipments
-SET shipping_status = 'Delivered'
+SET status = 'Delivered'
 WHERE tracking_number = 'TRK001';
 
-UPDATE shipments
-SET shipping_status = 'Pending'
-WHERE tracking_number != 'TRK001';
-
 -- ==============================
--- 11. DELETE COLUMN
+-- 10. REMOVE COLUMN
 -- ==============================
 ALTER TABLE shipments
-DROP COLUMN shipping_status;
-
--- ==============================
--- 12. FINAL VIEW
--- ==============================
-SELECT * FROM shipments;
+DROP COLUMN status;
